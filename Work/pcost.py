@@ -23,9 +23,5 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    args = (
-        sys.argv
-        if len(sys.argv) > 1
-        else ["report.py", "Data/portfolio.csv", "Data/prices.csv"]
-    )
+    args = sys.argv if len(sys.argv) > 1 else ["pcost.py", "Data/portfolio.csv"]
     main(args)

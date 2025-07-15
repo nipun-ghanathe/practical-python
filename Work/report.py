@@ -4,26 +4,22 @@
 # Exercise 2.4
 
 import sys
+from pathlib import Path
 
 from fileparse import parse_csv
 
 
 def read_portfolio(filename: str) -> list:
-    return parse_csv(
-        filename,
-        select=["name", "shares", "price"],
-        types=[str, int, float],
-    )
+    lines = Path(filename).read_text().splitlines()
+    return parse_csv(lines, select=["name", "shares", "price"], types=[str, int, float])
 
 
 def read_prices(filename: str) -> dict:
-    return dict(parse_csv(filename, types=[str, float], has_headers=False))
+    lines = Path(filename).read_text().splitlines()
+    return dict(parse_csv(lines, types=[str, float], has_headers=False))
 
 
-def make_report(
-    portfolio: list,
-    prices: dict,
-) -> list[tuple[str, int, float, float]]:
+def make_report(portfolio: list, prices: dict) -> list[tuple[str, int, float, float]]:
     return [
         (
             stock["name"],
@@ -40,9 +36,7 @@ def print_report(report: list[tuple[str, int, float, float]]):
     print(" ".join(f"{header:>10s}" for header in headers))
     print(" ".join("-" * 10 for _ in range(4)))
     for name, shares, price, change in report:
-        print(
-            f"{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}",
-        )
+        print(f"{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}")
 
 
 def portfolio_report(portfolio_file: str, prices_file: str) -> None:
@@ -62,5 +56,9 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    args = sys.argv if len(sys.argv) > 1 else ["pcost.py", "Data/portfolio.csv"]
+    args = (
+        sys.argv
+        if len(sys.argv) > 1
+        else ["report.py", "Data/portfolio.csv", "Data/prices.csv"]
+    )
     main(args)

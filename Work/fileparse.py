@@ -2,19 +2,18 @@
 #
 # Exercise 3.3
 
-import csv
-from pathlib import Path
+from collections.abc import Iterable
 from typing import Any
 
 
-def convert_types(types: list, rows: list | Any, *, silence_errors: bool = False) -> list[list[Any]]:
+def convert_types(
+    types: list, rows: list | Any, *, silence_errors: bool = False
+) -> list[list[Any]]:
     converted = []
     for rowno, row in enumerate(rows):
-        if not row:
-            continue
         try:
             converted.append([func(val) for func, val in zip(types, row)])
-        except ValueError as e:
+        except ValueError as e:  # noqa: PERF203
             if silence_errors:
                 pass
             else:
@@ -24,7 +23,7 @@ def convert_types(types: list, rows: list | Any, *, silence_errors: bool = False
 
 
 def parse_csv(  # noqa: PLR0913
-    filename: str,
+    rows: Iterable,
     select: list | None = None,
     types: list | None = None,
     delimiter: str = ",",
@@ -32,30 +31,21 @@ def parse_csv(  # noqa: PLR0913
     has_headers: bool = True,
     silence_errors: bool = False,
 ) -> list:
-    with Path(filename).open("rt", encoding="utf-8", newline="\n") as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=delimiter)
+    rows = [row.split(delimiter) for row in rows if row]
 
-        if not has_headers:
-            if select:
-                message = "select argument requires column headers"
-                raise RuntimeError(message)
-
-            if types:
-                rows = convert_types(types, csv_reader, silence_errors=silence_errors)
-            else:
-                rows = [row for row in csv_reader if row]
-            return list(map(tuple, rows))
-
-        headers = next(csv_reader)
-
+    if not has_headers:
         if select:
-            indices = [headers.index(header) for header in select]
-            headers = select
-            rows = [[row[i] for i in indices] for row in csv_reader if row]
-        else:
-            rows = [row for row in csv_reader if row]
-
+            message = "select argument requires column headers"
+            raise RuntimeError(message)
         if types:
             rows = convert_types(types, rows, silence_errors=silence_errors)
+        return list(map(tuple, rows))
 
-        return [dict(zip(headers, row)) for row in rows]
+    headers = rows.pop(0)
+    if select:
+        indices = [headers.index(header) for header in select]
+        headers = select
+        rows = [[row[i] for i in indices] for row in rows]
+    if types:
+        rows = convert_types(types, rows, silence_errors=silence_errors)
+    return [dict(zip(headers, row)) for row in rows]
