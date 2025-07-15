@@ -16,17 +16,6 @@ class Stock(TypedDict):
 def read_portfolio(filename: str) -> list[Stock]:
     with Path(filename).open("rt", encoding="utf-8", newline="\n") as csv_file:
         csv_reader = csv.DictReader(csv_file)
-        # types = [str, int, float]
-        # return [
-        #     cast(
-        #         "Stock",
-        #         {
-        #             name: val_type(val)
-        #             for name, val, val_type in zip(row.keys(), row.values(), types)
-        #         },
-        #     )
-        #     for row in csv_reader
-        # ]
         type_map = {
             "shares": int,
             "price": float,
@@ -46,7 +35,7 @@ def read_portfolio(filename: str) -> list[Stock]:
 def read_prices(filename: str) -> dict[str, float]:
     with Path(filename).open("rt", encoding="utf-8", newline="\n") as csv_file:
         csv_reader = csv.reader(csv_file)
-        return {row[0]: float(row[1]) for row in csv_reader if len(row) != 0}
+        return {row[0]: float(row[1]) for row in csv_reader if row}
 
 
 def make_report(
@@ -64,11 +53,7 @@ def make_report(
     return report
 
 
-def main():
-    portfolio = read_portfolio("Data/portfolio.csv")
-    prices = read_prices("Data/prices.csv")
-    report = make_report(portfolio, prices)
-
+def print_report(report: list[tuple[str, int, float, float]]):
     headers = ("Name", "Shares", "Price", "Change")
 
     print(" ".join(f"{header:>10s}" for header in headers))
@@ -78,6 +63,17 @@ def main():
         print(
             f"{name:>10s} {shares:>10d} {('$' + f'{price:.2f}'):>10s} {change:>10.2f}",
         )
+
+
+def portfolio_report(portfolio_file: str, prices_file: str) -> None:
+    portfolio = read_portfolio(portfolio_file)
+    prices = read_prices(prices_file)
+    report = make_report(portfolio, prices)
+    print_report(report)
+
+
+def main():
+    portfolio_report("Data/portfolio.csv", "Data/prices.csv")
 
 
 if __name__ == "__main__":
