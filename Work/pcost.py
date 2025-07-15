@@ -10,13 +10,16 @@ from pathlib import Path
 def portfolio_cost(filepath: str) -> float:
     with Path(filepath).open("r", encoding="utf-8", newline="\n") as csv_file:
         data = csv.reader(csv_file)
-        next(data)
+        headers = next(data)
 
         pcost: float = 0
         for rowno, row in enumerate(data, start=1):
+            record = dict(zip(headers, row))
             try:
-                pcost += int(row[1]) * float(row[2])
-            except ValueError:  # noqa: PERF203
+                nshares = int(record["shares"])
+                price = float(record["price"])
+                pcost += nshares * price
+            except ValueError:
                 print(f"Row {rowno}: Bad row: {row}")
     return pcost
 

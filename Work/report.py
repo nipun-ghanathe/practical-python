@@ -16,6 +16,17 @@ class Stock(TypedDict):
 def read_portfolio(filename: str) -> list[Stock]:
     with Path(filename).open("rt", encoding="utf-8", newline="\n") as csv_file:
         csv_reader = csv.DictReader(csv_file)
+        # types = [str, int, float]
+        # return [
+        #     cast(
+        #         "Stock",
+        #         {
+        #             name: val_type(val)
+        #             for name, val, val_type in zip(row.keys(), row.values(), types)
+        #         },
+        #     )
+        #     for row in csv_reader
+        # ]
         type_map = {
             "shares": int,
             "price": float,
