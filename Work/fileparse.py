@@ -2,6 +2,7 @@
 #
 # Exercise 3.3
 
+import csv
 from collections.abc import Iterable
 from typing import Any
 
@@ -14,9 +15,7 @@ def convert_types(
         try:
             converted.append([func(val) for func, val in zip(types, row)])
         except ValueError as e:  # noqa: PERF203
-            if silence_errors:
-                pass
-            else:
+            if not silence_errors:
                 print(f"Row {rowno}: Couldn't convert {row}")
                 print(f"Row {rowno}: Reason {e}")
     return converted
@@ -31,7 +30,9 @@ def parse_csv(  # noqa: PLR0913
     has_headers: bool = True,
     silence_errors: bool = False,
 ) -> list:
-    rows = [row.split(delimiter) for row in rows if row]
+    """Parse a CSV into a list of records with type conversion."""
+    csv_reader = csv.reader(rows, delimiter=delimiter)
+    rows = [row for row in csv_reader if row]
 
     if not has_headers:
         if select:

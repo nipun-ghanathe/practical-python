@@ -10,7 +10,7 @@ from report import read_portfolio
 
 def portfolio_cost(filepath: str) -> float:
     portfolio = read_portfolio(filepath)
-    return sum(record["shares"] * record["price"] for record in portfolio)
+    return sum(stock.cost for stock in portfolio)
 
 
 def main(argv):
