@@ -10,10 +10,10 @@ from report import read_portfolio
 
 def portfolio_cost(filepath: str) -> float:
     portfolio = read_portfolio(filepath)
-    return sum(stock.cost for stock in portfolio)
+    return portfolio.total_cost
 
 
-def main(argv):
+def main(argv: list[str]) -> None:
     if len(argv) != 2:  # noqa: PLR2004
         message = f"Usage: {argv[0]} portfile"
         raise SystemExit(message)

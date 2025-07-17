@@ -8,7 +8,7 @@ from typing import Any
 
 
 def convert_types(
-    types: list, rows: list | Any, *, silence_errors: bool = False
+    types: list, rows: Iterable, *, silence_errors: bool = False
 ) -> list[list[Any]]:
     converted = []
     for rowno, row in enumerate(rows):

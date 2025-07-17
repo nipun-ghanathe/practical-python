@@ -1,0 +1,5 @@
+extend = "~/.config/ruff/ruff.toml"
+
+lint.extend-select = [
+    "ANN"
+]

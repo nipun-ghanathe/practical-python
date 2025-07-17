@@ -1,16 +1,20 @@
+# mypy: disable-error-code=override
+
 # tableformat.py
 #
 # Exercise 4.5
+
+from typing import NoReturn
 
 from stock import Stock
 
 
 class TableFormatter:
-    def headings(self, headers):
+    def headings(self, headers: list[str]) -> NoReturn:
         """Emit the table headings."""
         raise NotImplementedError
 
-    def row(self, rowdaata):
+    def row(self, rowdaata: list[str]) -> NoReturn:
         """Emit a single row of table data."""
         raise NotImplementedError
 

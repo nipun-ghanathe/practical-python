@@ -8,18 +8,20 @@ from pathlib import Path
 
 import tableformat
 from fileparse import parse_csv
+from portfolio import Portfolio
 from stock import Stock
 
 
-def read_portfolio(filename: str) -> list[Stock]:
+def read_portfolio(filename: str) -> Portfolio:
     lines = Path(filename).read_text().splitlines()
     portdicts = parse_csv(
         lines, select=["name", "shares", "price"], types=[str, int, float]
     )
-    return [
+    portfolio = [
         Stock(portdict["name"], portdict["shares"], portdict["price"])
         for portdict in portdicts
     ]
+    return Portfolio(portfolio)
 
 
 def read_prices(filename: str) -> dict:
@@ -28,7 +30,7 @@ def read_prices(filename: str) -> dict:
 
 
 def make_report(
-    portfolio: list[Stock], prices: dict
+    portfolio: Portfolio, prices: dict
 ) -> list[tuple[str, int, float, float]]:
     return [
         (

@@ -17,18 +17,18 @@ class Stock:
         return f"Stock({self.name}, {self.shares}, {self.price})"
 
     @property
-    def shares(self):
+    def shares(self) -> int:
         return self._shares
 
     @shares.setter
-    def shares(self, value):
+    def shares(self, value: int) -> None:
         if not isinstance(value, int):
             message = "Expected int"
             raise TypeError(message)
         self._shares = value
 
     @property
-    def cost(self):
+    def cost(self) -> float:
         return self.shares * self.price
 
     def sell(self, nshares: int) -> None:
