@@ -3,8 +3,11 @@
 # Exercise 3.3
 
 import csv
+import logging
 from collections.abc import Iterable
 from typing import Any
+
+log = logging.getLogger(__name__)
 
 
 def convert_types(
@@ -16,8 +19,8 @@ def convert_types(
             converted.append([func(val) for func, val in zip(types, row)])
         except ValueError as e:  # noqa: PERF203
             if not silence_errors:
-                print(f"Row {rowno}: Couldn't convert {row}")
-                print(f"Row {rowno}: Reason {e}")
+                log.warning("Row %d: Couldn't convert %s", rowno, row)
+                log.debug("Row %d: Reason %s", rowno, e)
     return converted
 
 

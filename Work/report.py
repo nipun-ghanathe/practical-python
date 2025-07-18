@@ -5,23 +5,16 @@
 
 import sys
 from pathlib import Path
+from typing import Any
 
 import tableformat
 from fileparse import parse_csv
 from portfolio import Portfolio
-from stock import Stock
 
 
-def read_portfolio(filename: str) -> Portfolio:
+def read_portfolio(filename: str, **opts: Any) -> Portfolio:  # noqa: ANN401, ARG001
     lines = Path(filename).read_text().splitlines()
-    portdicts = parse_csv(
-        lines, select=["name", "shares", "price"], types=[str, int, float]
-    )
-    portfolio = [
-        Stock(portdict["name"], portdict["shares"], portdict["price"])
-        for portdict in portdicts
-    ]
-    return Portfolio(portfolio)
+    return Portfolio.from_csv(lines)
 
 
 def read_prices(filename: str) -> dict:
@@ -73,6 +66,8 @@ def main(argv: list) -> None:
 
 
 if __name__ == "__main__":
+    import logging_setup  # noqa: F401
+
     args = (
         sys.argv
         if len(sys.argv) > 1

@@ -1,5 +1,13 @@
 extend = "~/.config/ruff/ruff.toml"
 
 lint.extend-select = [
-    "ANN"
+    "ANN",
 ]
+
+lint.ignore = [
+    "ANN002",
+    "ANN003",
+]
+
+[lint.extend-per-file-ignores]
+"test_stock.py" = ["ANN201"]

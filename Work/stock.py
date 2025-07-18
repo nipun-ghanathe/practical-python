@@ -1,12 +1,20 @@
+# ruff: noqa: PLE0237
+
 # stock.py
 #
 # Exercise 4.1
+
+from typedproperty import Float, Integer, String
 
 
 class Stock:
     """Object representing a stock."""
 
-    __slots__ = ("_shares", "name", "price")
+    __slots__ = ("_name", "_price", "_shares")
+
+    name = String("name")
+    shares = Integer("shares")
+    price = Float("price")
 
     def __init__(self, name: str, shares: int, price: float) -> None:
         self.name = name
@@ -15,17 +23,6 @@ class Stock:
 
     def __repr__(self) -> str:
         return f"Stock({self.name}, {self.shares}, {self.price})"
-
-    @property
-    def shares(self) -> int:
-        return self._shares
-
-    @shares.setter
-    def shares(self, value: int) -> None:
-        if not isinstance(value, int):
-            message = "Expected int"
-            raise TypeError(message)
-        self._shares = value
 
     @property
     def cost(self) -> float:
