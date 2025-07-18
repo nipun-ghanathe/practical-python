@@ -2,7 +2,7 @@
 
 import unittest
 
-from stock import Stock
+from porty.stock import Stock
 
 
 class TestStock(unittest.TestCase):

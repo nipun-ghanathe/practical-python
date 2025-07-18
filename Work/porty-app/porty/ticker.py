@@ -6,9 +6,9 @@ import csv
 from collections.abc import Generator, Iterable
 from typing import Any, cast
 
-import tableformat
-from follow import follow
-from report import read_portfolio
+from porty import tableformat
+from porty.follow import follow
+from porty.report import read_portfolio
 
 
 def select_columns(rows: Iterable[list], indices: Iterable[int]) -> Generator[list]:

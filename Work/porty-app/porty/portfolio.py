@@ -6,8 +6,8 @@ from collections import Counter
 from collections.abc import Iterable, Iterator
 from typing import Self
 
-from fileparse import parse_csv
-from stock import Stock
+from porty.fileparse import parse_csv
+from porty.stock import Stock
 
 
 class Portfolio:

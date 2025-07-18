@@ -7,9 +7,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import tableformat
-from fileparse import parse_csv
-from portfolio import Portfolio
+from porty import tableformat
+from porty.fileparse import parse_csv
+from porty.portfolio import Portfolio
 
 
 def read_portfolio(filename: str, **opts: Any) -> Portfolio:  # noqa: ANN401, ARG001
@@ -66,7 +66,7 @@ def main(argv: list) -> None:
 
 
 if __name__ == "__main__":
-    import logging_setup  # noqa: F401
+    from porty import logging_setup  # noqa: F401
 
     args = (
         sys.argv

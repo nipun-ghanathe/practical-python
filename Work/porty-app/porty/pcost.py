@@ -5,7 +5,7 @@
 
 import sys
 
-from report import read_portfolio
+from porty.report import read_portfolio
 
 
 def portfolio_cost(filepath: str) -> float:

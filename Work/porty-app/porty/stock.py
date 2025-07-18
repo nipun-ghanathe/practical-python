@@ -4,7 +4,7 @@
 #
 # Exercise 4.1
 
-from typedproperty import Float, Integer, String
+from porty.typedproperty import Float, Integer, String
 
 
 class Stock:

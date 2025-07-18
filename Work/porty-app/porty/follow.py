@@ -6,7 +6,7 @@ import os
 import time
 from pathlib import Path
 
-from report import read_portfolio
+from porty.report import read_portfolio
 
 
 def follow(filename: str) -> str:
